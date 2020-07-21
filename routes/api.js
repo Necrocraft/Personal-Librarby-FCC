@@ -44,6 +44,16 @@ module.exports = function (app) {
     .get(function (req, res){
       //response will be array of book objects
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
+      Book.find({}, (err, data) => {
+        console.log(data);
+        if(err) {
+            return res.send('Error reading Database');
+        }
+        else {
+            let library
+            res.json(data);
+        }
+      })
     })
     
     .post(function (req, res){
