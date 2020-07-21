@@ -104,7 +104,7 @@ module.exports = function (app) {
     .get(function (req, res){
       var bookid = req.params.id;
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
-      Book.findOne({'_id': bookid}, async (err, data) => {
+      Book.findOne({'_id': bookid}, (err, data) => {
           console.log(data);
           if(data === null) {
             res.json({error : "No book found with the given id :" + bookid})
@@ -119,7 +119,7 @@ module.exports = function (app) {
       var bookid = req.params.id;
       var comment = req.body.comment;
       //json res format same as .get
-          Book.findOneAndUpdate({'_id': bookid}, { $push: { 'comments': comment }}, {new: true} , async (err, data) => {
+          Book.findOneAndUpdate({'_id': bookid}, { $push: { 'comments': comment }}, {new: true} , (err, data) => {
           console.log(data);
           if(data === null) {
             res.json({error : "No book found with the given id :" + bookid})
@@ -133,6 +133,15 @@ module.exports = function (app) {
     .delete(function(req, res){
       var bookid = req.params.id;
       //if successful response will be 'delete successful'
+      Book.findByIdAndDelete({'_id': bookid}, (err, data) => {
+        if (err){ 
+          return res.json({message: err});
+        } 
+        else{ 
+            console.log("Deleted : ", data);
+            res.send("complete delete successful");
+        }
+      })
     });
   
 };
