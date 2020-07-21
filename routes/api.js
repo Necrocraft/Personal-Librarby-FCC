@@ -144,4 +144,19 @@ module.exports = function (app) {
       })
     });
   
+      .delete(function(req, res){
+      var bookid = req.params.id;
+      //if successful response will be 'delete successful'
+      Book.findByIdAndDelete({'_id': bookid}, (err, data) => {
+        if (err){ 
+          return res.json({message: err});
+        } 
+        else{ 
+            console.log("Deleted : ", data);
+            res.send("complete delete successful");
+        }
+      })
+    });
+  
+    
 };
