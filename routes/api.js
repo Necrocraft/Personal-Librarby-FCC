@@ -104,6 +104,15 @@ module.exports = function (app) {
     .get(function (req, res){
       var bookid = req.params.id;
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
+      Book.findOne({'_id': bookid}, async (err, data) => {
+          console.log(data);
+          if(data === null) {
+            res.json({error : "No book found with the given id :" + bookid})
+          }
+          else {
+              res.json(data);
+          }
+      })
     })
     
     .post(function(req, res){
