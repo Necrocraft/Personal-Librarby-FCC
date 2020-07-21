@@ -13,6 +13,11 @@ var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId;
 require("dotenv/config");
 const mongoose = require('mongoose');
+const shortid = require('shortid');
+
+mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true },  () => {
+    console.log("Connected to DB");
+});
 
 const UrlSchema = mongoose.Schema({
     title : {
@@ -44,6 +49,25 @@ module.exports = function (app) {
     .post(function (req, res){
       var title = req.body.title;
       //response will contain new book object including atleast _id and title
+        Url.findOne({'title': title}, async (err, data) => {
+        console.log(data);
+        if(data === null) {
+            const user = new Url({
+                title: title,
+                _id: shortid.generate()
+            })
+            try {
+                const savedValue = await user.save();
+                return res.json(savedValue);
+            }
+            catch(err) {
+                return res.json({message: err});
+            }
+        }
+        else {
+            res.json({error: "Already exists"});
+        }
+    })
     })
     
     .delete(function(req, res){
