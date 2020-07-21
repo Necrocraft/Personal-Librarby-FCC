@@ -19,7 +19,7 @@ mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: tr
     console.log("Connected to DB");
 });
 
-const UrlSchema = mongoose.Schema({
+const BookSchema = mongoose.Schema({
     title : {
         type : String,
         required : true
@@ -33,7 +33,7 @@ const UrlSchema = mongoose.Schema({
   }
 });
 
-const Url = mongoose.model('Url', UrlSchema);
+const Book = mongoose.model('Book', BookSchema);
 
 
 
@@ -49,16 +49,21 @@ module.exports = function (app) {
     .post(function (req, res){
       var title = req.body.title;
       //response will contain new book object including atleast _id and title
-        Url.findOne({'title': title}, async (err, data) => {
+        Book.findOne({'title': title}, async (err, data) => {
         console.log(data);
         if(data === null) {
-            const user = new Url({
+            const user = new Book({
                 title: title,
                 _id: shortid.generate()
             })
             try {
                 const savedValue = await user.save();
-                return res.json(savedValue);
+              let obj = {
+                title: savedValue.title,
+                _id: savedValue._id
+              }
+                console.log(obj);
+                return res.json(obj);
             }
             catch(err) {
                 return res.json({message: err});
