@@ -104,7 +104,7 @@ module.exports = function (app) {
         console.log(response.deletedCount);
         return res.json({success: "Complete Delete Successful"});
       } else {
-        return res.json({success: "Error deleting database"});
+        return res.json({failure: "Error deleting database"});
       }
     
     });
