@@ -97,16 +97,16 @@ module.exports = function (app) {
       })
     })
     
-    .delete(function(req, res){
+    .delete(async function(req, res){
       //if successful response will be 'complete delete successful'
-        Book.deleteMany({}).then((data) => {
-        console.log(data.deletedCount);
-        return res.send("Complete Delete Successful");
-        
-      }).catch(err => {
-        console.log(err);
-        return res.json({message: err});
-      })
+      let response = await Book.deleteMany({});
+      if(response.ok === 1) {
+        console.log(response.deletedCount);
+        return res.json({message: "Complete Delete Successful"});
+      } else {
+        return res.json({message: "Error deleting database"});
+      }
+    
     });
 
 
