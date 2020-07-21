@@ -119,6 +119,16 @@ module.exports = function (app) {
       var bookid = req.params.id;
       var comment = req.body.comment;
       //json res format same as .get
+          Book.findOne({'_id': bookid}, async (err, data) => {
+          console.log(data);
+          if(data === null) {
+            res.json({error : "No book found with the given id :" + bookid})
+          }
+          else {
+              data.comments.push(comment);
+              res.json(data);
+          }
+      })
     })
     
     .delete(function(req, res){
