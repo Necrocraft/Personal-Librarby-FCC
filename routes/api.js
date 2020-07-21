@@ -12,12 +12,25 @@ var expect = require('chai').expect;
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId;
 require("dotenv/config");
-const MONGODB_CONNECTION_STRING = process.env.DB;
+const mongoose = require('mongoose');
 
-
-MongoClient.connect(MONGODB_CONNECTION_STRING, { useUnifiedTopology: true },  function(err, client) {
-  let db = client.db('booklibrary');
+const UrlSchema = mongoose.Schema({
+    title : {
+        type : String,
+        required : true
+    },
+    _id : {
+        type : String,
+        required : true
+    },
+  comments: {
+    type: Array
+  }
 });
+
+const Url = mongoose.model('Url', UrlSchema);
+
+
 
 
 module.exports = function (app) {
