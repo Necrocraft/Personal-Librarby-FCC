@@ -102,9 +102,9 @@ module.exports = function (app) {
       let response = await Book.deleteMany({});
       if(response.ok === 1) {
         console.log(response.deletedCount);
-        return res.json({message: "Complete Delete Successful"});
+        return res.json({success: "Complete Delete Successful"});
       } else {
-        return res.json({message: "Error deleting database"});
+        return res.json({success: "Error deleting database"});
       }
     
     });

@@ -78,7 +78,6 @@ $( document ).ready(function() {
       data: $('#newBookForm').serialize(),
       success: function(data) {
         //update list
-        console.log(data);
         $('#deletedAll').html('<p style="color: red;">Refresh the page</p>');
       }
     });
