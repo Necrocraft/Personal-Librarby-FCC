@@ -45,13 +45,22 @@ module.exports = function (app) {
       //response will be array of book objects
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
       Book.find({}, (err, data) => {
-        console.log(data);
+        console.log("Database", data);
         if(err) {
             return res.send('Error reading Database');
         }
         else {
-            let library
-            res.json(data);
+            let libraryData = [];
+            data.map(book => {
+              let obj = {
+                title: book.title,
+                _id: book._id,
+                commentcount: book.comments.length
+              }
+              libraryData.push(obj);
+            })
+            console.log("New Data", libraryData);
+            res.json(libraryData);
         }
       })
     })
