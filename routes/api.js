@@ -68,6 +68,9 @@ module.exports = function (app) {
     .post(function (req, res){
       var title = req.body.title;
       //response will contain new book object including atleast _id and title
+        if(!title) {
+          return res.send("Please enter the title");
+        }
         Book.findOne({'title': title}, async (err, data) => {
         console.log(data);
         if(data === null) {
@@ -91,18 +94,18 @@ module.exports = function (app) {
         else {
             res.json({error: "Already exists"});
         }
-    })
+      })
     })
     
     .delete(function(req, res){
       //if successful response will be 'complete delete successful'
         Book.deleteMany({}).then((data) => {
         console.log(data.deletedCount);
-        res.send("Complete Delete Successful")
+        return res.send("Complete Delete Successful");
         
       }).catch(err => {
         console.log(err);
-        return res.json({message: err})
+        return res.json({message: err});
       })
     });
 
